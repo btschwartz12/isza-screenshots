@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instagram Queue</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+        .queue, .stack {
+            margin: 10px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        img {
+            border-radius: 5px;
+        }
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+    </style>
+    <!-- Add any additional CSS or JS here -->
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title is-1">Instagram Post Queue</h1>
+            <a href="{{ url_for('add_post') }}" class="button is-primary">Add New Post</a>
+
+            <div class="columns">
+                <!-- Queue Section -->
+                <div class="queue column">
+                    <h2 class="title is-3">Queue</h2>
+                    <ul>
+                        {% for post in queue_posts %}
+                            <li>
+                                <span class="tag is-info">#{{ post.position }}</span>
+                                <img src="{{ url_for('uploaded_file', filename=post.image_filename) }}" width="100">
+                                <p>{{ post.caption }}</p>
+                                <a href="{{ url_for('move', post_id=post.id, direction='up') }}" class="button is-small is-light">Move Up</a>
+                                <a href="{{ url_for('move', post_id=post.id, direction='down') }}" class="button is-small is-light">Move Down</a>
+                                <a href="{{ url_for('edit_post', post_id=post.id) }}" class="button is-small is-light">Edit</a>
+                                <!-- Add any additional controls for queue items here -->
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Stack Section -->
+                <div class="stack column">
+                    <h2 class="title is-3">Stack</h2>
+                    <ul>
+                        {% for post in stack_posts %}
+                            <li>
+                                <span>Posted: {{ post.posted_at.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                                <img src="{{ url_for('uploaded_file', filename=post.image_filename) }}" width="100">
+                                <p>{{ post.caption }}</p>
+                                <!-- Add any additional controls for stack items here -->
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
