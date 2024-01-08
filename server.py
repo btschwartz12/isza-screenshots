@@ -64,6 +64,14 @@ def add_post():
         image_file = request.files['image']
         caption = request.form['caption']
         filename = str(uuid.uuid4()) + '.jpg'
+
+        # Check to make sure the upload folder is not over 100 MB
+        total_size = 0
+        for file in os.listdir(app.config['UPLOAD_FOLDER']):
+            total_size += os.path.getsize(os.path.join(app.config['UPLOAD_FOLDER'], file))
+        if total_size > 100000000:
+            return "Upload folder is full", 500
+
         image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         max_position = db.session.query(db.func.max(Post.position)).scalar() or 0
