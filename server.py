@@ -56,9 +56,15 @@ def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
     if not post:
         return "Post not found", 404
+    
+
     if request.method == 'POST':
         if post.is_posted:
             return "Method not allowed", 405
+        secret = os.getenv('EDIT_SECRET')
+        user_secret = request.form['secret']
+        if user_secret != secret:
+            return "Unauthorized", 401
         if 'save' in request.form:
             post.caption = request.form['caption']
             db.session.commit()
