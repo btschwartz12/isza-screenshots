@@ -118,7 +118,7 @@ def post():
     if user_secret != secret:
         return jsonify({'error': 'Unauthorized'}), 401
     
-    is_testing = request.args.get('test') == 'true'
+    is_testing = request.args.get('test') != 'false'
 
     next_post = Post.query.filter_by(is_deleted=False, is_posted=False).order_by(Post.position).first()
     if not next_post:
