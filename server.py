@@ -150,5 +150,7 @@ def post():
 
     # Return success
     return jsonify({'message': 'Image posted successfully', 
+                    'id': next_post.id,
+                    'caption': caption,
                     'test': is_testing}), 200
 
