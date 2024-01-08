@@ -1,4 +1,4 @@
-name: Daily Post
+name: Daily Post Test
 
 on:
   workflow_dispatch:
