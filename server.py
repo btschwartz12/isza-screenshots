@@ -5,7 +5,7 @@ import uuid
 import base64
 from shared import app, db
 from flask import jsonify, render_template, request, redirect, send_from_directory, url_for
-from backend import post_image
+from instagram import post_image
 
 from models import Post
 
@@ -13,7 +13,9 @@ from models import Post
 def index():
     queue_posts = Post.query.filter_by(is_posted=False).order_by(Post.position).all()
     stack_posts = Post.query.filter_by(is_posted=True).order_by(Post.posted_at.desc()).all()
-    return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts)
+    daily_post_time_est = os.getenv('DAILY_POST_TIME_EST')
+
+    return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts, daily_post_time_est=daily_post_time_est)
 
 
 @app.route('/move/<int:post_id>/<direction>')
@@ -42,6 +44,8 @@ def uploaded_file(filename):
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
     if request.method == 'POST':
+        if post.is_posted:
+            return "Method not allowed", 405
         if 'save' in request.form:
             post.caption = request.form['caption']
             db.session.commit()
@@ -97,7 +101,16 @@ def get_next_post():
 @app.route('/api/post')
 def post():
 
-    next_post = Post.query.order_by(Post.position).first()
+    user_secret = request.args.get('secret')
+
+    secret = os.getenv('SECRET')
+
+    if user_secret != secret:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    is_testing = request.args.get('test') == 'true'
+
+    next_post = Post.query.filter_by(is_posted=False).order_by(Post.position).first()
     if not next_post:
         return jsonify({'error': 'No posts found'}), 404
     
@@ -110,7 +123,7 @@ def post():
     caption = next_post.caption
     maxtries = os.getenv('NUM_RETRIES')
 
-    media = post_image(username, password, file_path, caption, int(maxtries), test=True)
+    media = post_image(username, password, file_path, caption, int(maxtries), test=is_testing)
 
     if not media:
         return jsonify({'error': 'Failed to post image'}), 500
