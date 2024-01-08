@@ -13,6 +13,13 @@ from models import Post
 def index():
     queue_posts = Post.query.filter_by(is_posted=False).order_by(Post.position).all()
     stack_posts = Post.query.filter_by(is_posted=True).order_by(Post.posted_at.desc()).all()
+
+    for i, post in enumerate(queue_posts):
+        if post.position != i + 1:
+            post.position = i + 1
+    
+    db.session.commit()
+
     daily_post_time_est = os.getenv('DAILY_POST_TIME_EST')
 
     return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts, daily_post_time_est=daily_post_time_est)
