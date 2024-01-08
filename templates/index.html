@@ -9,6 +9,7 @@
         body, html {
             height: 100%; /* Full height */
             margin: 0; /* Remove default margin */
+            
         }
 
         /* Bulma Columns Modification for 50% Width */
@@ -26,6 +27,14 @@
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+
+        .queue {
+            background-color: hsl(0, 100%, 96%);
+        }
+
+        .stack {
+            background-color: rgb(230, 234, 255);
         }
 
         /* Center Align Items Vertically */
@@ -136,7 +145,7 @@
                                 <div class="post-content">
                                     <span class="tag is-info post-title">Posted: {{ post.posted_at.strftime('%Y-%m-%d %H:%M:%S') }}</span>
                                     <a href="{{ url_for('edit_post', post_id=post.id) }}"><img src="{{ url_for('uploaded_file', filename=post.image_filename) }}" alt="Post Image" ></a>
-                                    <!-- <p>{{ post.caption | replace('\n', '<br>') | safe }}</p> -->
+                                    <p>{{ post.caption | replace('\n', '<br>') | safe }}</p>
                                 </div>
                             </li>
                         {% endfor %}
