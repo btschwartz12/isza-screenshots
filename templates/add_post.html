@@ -46,7 +46,26 @@
     <div class="post-container">
         <h1 class="title">Add New Post</h1>
         <form action="{{ url_for('add_post') }}" method="post" enctype="multipart/form-data">
-            <input type="file" name="image" required>
+            <div>
+                <label>Image 1</label>
+                <input type="file" name="image" required>
+            </div>
+            <div>
+                <label>Image 2</label>
+                <input type="file" name="image">
+            </div>
+            <div>
+                <label>Image 3</label>
+                <input type="file" name="image">
+            </div>
+            <div>
+                <label>Image 4</label>
+                <input type="file" name="image">
+            </div>
+            <div>
+                <label>Image 5</label>
+                <input type="file" name="image">
+            </div>
             <textarea name="caption" placeholder="Enter caption" rows="4" required></textarea>
             <div>
                 <button type="submit" class="button is-primary">Upload</button>

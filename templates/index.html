@@ -127,8 +127,9 @@
                                         <a href="{{ url_for('move', post_id=post.id, direction='down') }}" class="button is-small is-light">Move Down</a>
                                         <a href="{{ url_for('edit_post', post_id=post.id) }}" class="button is-small is-light">Edit</a>
                                     </div>
-                                    <a href="{{ url_for('edit_post', post_id=post.id) }}"><img src="{{ url_for('uploaded_file', filename=post.image_filename) }}" width="100" href="{{ url_for('edit_post', post_id=post.id) }}"></a>
+                                    <a href="{{ url_for('edit_post', post_id=post.id) }}"><img src="{{ url_for('uploaded_file', filename=post.image_filenames.split(',')[0]) }}" width="100" href="{{ url_for('edit_post', post_id=post.id) }}"></a>
                                     <!-- <p>{{ post.caption | replace('\n', '<br>') | safe }}</p> -->
+                                    <span class="tag"># Photos: {{ post.photo_count }}</span>
                                 </div>
 
                             </li>
@@ -143,9 +144,10 @@
                         {% for post in stack_posts %}
                             <li>
                                 <div class="post-content">
-                                    <span class="tag is-info post-title">Posted: {{ post.posted_at.strftime('%Y-%m-%d %H:%M:%S') }}</span>
-                                    <a href="{{ url_for('edit_post', post_id=post.id) }}"><img src="{{ url_for('uploaded_file', filename=post.image_filename) }}" alt="Post Image" ></a>
+                                    <span class="tag is-info post-title"> {{ post.posted_at.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                                    <a href="{{ url_for('edit_post', post_id=post.id) }}"><img src="{{ url_for('uploaded_file', filename=post.image_filenames.split(',')[0]) }}" alt="Post Image" ></a>
                                     <!-- <p>{{ post.caption | replace('\n', '<br>') | safe }}</p> -->
+                                    <span class="tag"># Photos: {{ post.photo_count }}</span>
                                 </div>
                             </li>
                         {% endfor %}
