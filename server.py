@@ -9,7 +9,7 @@ from instagram import post_image
 
 from models import Post
 
-@app.route('/', methods=['GET'])
+@app.route('/icestation', methods=['GET'])
 def index():
     queue_posts = Post.query.filter_by(is_posted=False).order_by(Post.position).all()
     stack_posts = Post.query.filter_by(is_posted=True).order_by(Post.posted_at.desc()).all()
@@ -18,7 +18,7 @@ def index():
     return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts, daily_post_time_est=daily_post_time_est)
 
 
-@app.route('/move/<int:post_id>/<direction>')
+@app.route('/icestation/move/<int:post_id>/<direction>')
 def move(post_id, direction):
     post = Post.query.get_or_404(post_id)
     if direction == 'up' and post.position > 1:
@@ -35,12 +35,12 @@ def move(post_id, direction):
     return redirect(url_for('index'))
 
 
-@app.route('/uploads/<filename>')
+@app.route('/icestation/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-@app.route('/edit/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/icestation/edit/<int:post_id>', methods=['GET', 'POST'])
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
     if request.method == 'POST':
@@ -58,7 +58,7 @@ def edit_post(post_id):
     return render_template('edit_post.html', post=post)
 
 
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/icestation/add', methods=['GET', 'POST'])
 def add_post():
     if request.method == 'POST':
         image_file = request.files['image']
@@ -84,7 +84,7 @@ def add_post():
     return render_template('add_post.html')
 
 
-@app.route('/api/getnextpost')
+@app.route('/icestation/api/getnextpost')
 def get_next_post():
     # Return the post and caption for the next post to be posted
 
@@ -106,7 +106,7 @@ def get_next_post():
     return jsonify({'image': image_base64, 'caption': post.caption}), 200
 
 
-@app.route('/api/post')
+@app.route('/icestation/api/post')
 def post():
 
     user_secret = request.args.get('secret')
