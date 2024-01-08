@@ -21,8 +21,9 @@ def index():
     db.session.commit()
 
     daily_post_time_est = os.getenv('DAILY_POST_TIME_EST')
+    instagram_account_url = os.getenv('INSTAGRAM_ACCOUNT_URL')
 
-    return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts, daily_post_time_est=daily_post_time_est)
+    return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts, daily_post_time_est=daily_post_time_est, instagram_account_url=instagram_account_url)
 
 
 @app.route('/icestation/move/<int:post_id>/<direction>')

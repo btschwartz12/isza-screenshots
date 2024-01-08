@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Instagram Queue</title>
+    <title>Ice Station</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <style>
@@ -96,14 +96,18 @@
 <body>
     <section class="section">
         <div class="container">
-            <h1 class="title is-1">Instagram Post Queue</h1>
-            <a href="{{ url_for('add_post') }}" class="button is-primary">Add New Post</a>
-            <span class="tag is-warning">Daily Post Time: {{ daily_post_time_est }} EST</span>
+            <h1 class="title is-1">Ice Station Posts</h1>
+            <a href="{{ url_for('add_post') }}" class="tag is-success">Add New Post</a>
+            
+            <!-- <span class="tag is-warning">Daily Post Time: {{ daily_post_time_est }} EST</span> -->
+            <a href="{{ instagram_account_url }}"><span class="tag">Account</span></a>
+
+            <hr/>
 
             <div class="columns">
                 <!-- Queue Section -->
                 <div class="queue column">
-                    <h2 class="title is-3">Queue</h2>
+                    <h2 class="title is-3">Up Next</h2>
                     <ul>
                         {% for post in queue_posts %}
                             <li>
@@ -125,7 +129,7 @@
 
                 <!-- Stack Section -->
                 <div class="stack column">
-                    <h2 class="title is-3">Stack</h2>
+                    <h2 class="title is-3">Previous Posts</h2>
                     <ul>
                         {% for post in stack_posts %}
                             <li>
