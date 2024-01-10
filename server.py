@@ -126,7 +126,10 @@ def post():
     
     # Get the file paths
     file_paths = os.path.join(app.config['UPLOAD_FOLDER'], next_post.image_filenames).split(',')
-
+    
+    # wait the file paths are not full paths
+    file_paths = [os.path.join(app.config['UPLOAD_FOLDER'], file_path) for file_path in file_paths]
+    
     # Post the image
     username = os.getenv('INSTAGRAM_USERNAME')
     password = os.getenv('INSTAGRAM_PASSWORD')

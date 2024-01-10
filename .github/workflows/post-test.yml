@@ -15,4 +15,8 @@ jobs:
 
     - name: Run Curl Command
       run: |
-        curl --location --request GET "https://btschwartz.com/icestation/api/post?secret=${{ secrets.POST_SECRET }}&test=true"
+        response=$(curl --location --request GET "https://btschwartz.com/icestation/api/post?secret=pruh-juh-4$&test=true" -w '%{http_code}' -o /dev/null -s)
+        if [ "$response" -ne 200 ]; then
+          echo "Request failed with status $response"
+          exit 1
+        fi
