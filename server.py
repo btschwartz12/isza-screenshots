@@ -44,7 +44,7 @@ def index():
 
     yaml_path = pathlib.Path('.github/workflows/post.yml')
     times: List[datetime] = get_daily_post_times_from_yaml_etc(yaml_path)
-    daily_post_times_est = ', '.join([datetime.strftime(time, '%H:%M') for time in times])
+    daily_post_times_est = ', '.join(['~' + datetime.strftime(time, '%H:%M') for time in times])
 
     
 
