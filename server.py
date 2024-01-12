@@ -1,14 +1,35 @@
 
-from datetime import datetime
+from datetime import datetime, time, timezone, timedelta
 import os
+import pathlib
+from typing import List
 import uuid
 import pytz
-import base64
+import yaml
 from shared import app, db
 from flask import jsonify, render_template, request, redirect, send_from_directory, url_for
 from instagram import post_image
 
 from models import Post
+
+def get_daily_post_times_from_yaml_etc(path):
+    with open(path) as f:
+        workflow = yaml.safe_load(f)
+
+    est = pytz.timezone('America/New_York')
+    utc = pytz.utc
+
+    cron_lines = workflow[True]["schedule"]
+    cron_times = [e["cron"] for e in cron_lines]
+    post_times_est = []
+    for cron_time in cron_times:
+        hour = int(cron_time.split(" ")[1])
+        minute = int(cron_time.split(" ")[0])
+        time_utc = datetime.now(utc).replace(hour=hour, minute=minute, second=0, microsecond=0)
+        time_est = time_utc.astimezone(est)
+        post_times_est.append(time_est)
+    return post_times_est
+
 
 @app.route('/icestation', methods=['GET'])
 def index():
@@ -21,10 +42,15 @@ def index():
     
     db.session.commit()
 
-    daily_post_time_est = os.getenv('DAILY_POST_TIME_EST')
+    yaml_path = pathlib.Path('.github/workflows/post.yml')
+    times: List[datetime] = get_daily_post_times_from_yaml_etc(yaml_path)
+    daily_post_times_est = ', '.join([datetime.strftime(time, '%H:%M') for time in times])
+
+    
+
     instagram_account_url = os.getenv('INSTAGRAM_ACCOUNT_URL')
 
-    return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts, daily_post_time_est=daily_post_time_est, instagram_account_url=instagram_account_url)
+    return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts, daily_post_times_est=daily_post_times_est, instagram_account_url=instagram_account_url)
 
 
 @app.route('/icestation/move/<int:post_id>/<direction>')
