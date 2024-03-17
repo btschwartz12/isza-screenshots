@@ -33,6 +33,7 @@ def get_daily_post_times_from_yaml_etc(path):
 
 @app.route('/icestation', methods=['GET'])
 def index():
+    db.create_all()
     queue_posts = Post.query.filter_by(is_deleted=False, is_posted=False).order_by(Post.position).all()
     stack_posts = Post.query.filter_by(is_deleted=False, is_posted=True).order_by(Post.posted_at.desc()).all()
 

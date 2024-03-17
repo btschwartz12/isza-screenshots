@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  isza-screenshots:
+    container_name: isza-screenshots
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    command: gunicorn -w 2 -b 0.0.0.0:8000 app:app
+    volumes:
+      - ./instance/posts.db:/app/instance/posts.db
+      - ./uploads:/app/var
