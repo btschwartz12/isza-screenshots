@@ -172,10 +172,9 @@ def post():
     est_timezone = pytz.timezone('US/Eastern')
     est_now = utc_now.astimezone(est_timezone)
 
-    if not is_testing:
-        next_post.is_posted = True
-        next_post.posted_at = est_now
-        db.session.commit()
+    next_post.is_posted = True
+    next_post.posted_at = est_now
+    db.session.commit()
 
     # Return success
     return jsonify({'message': 'Image posted successfully', 
