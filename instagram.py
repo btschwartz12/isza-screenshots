@@ -39,31 +39,3 @@ def post_image(username, password, paths, caption, maxtries, test=True):
 
 
 
-# @app.route('/api/v1/insta/post', methods=['POST'])
-# def post_insta():
-
-#     file = request.files.get('image')
-#     caption = request.form.get('caption')
-#     if not file:
-#         return {'error': "No 'image' provided"}, 400
-#     if not caption:
-#         return {'error': "No 'caption' provided"}, 400
-    
-#     username = os.getenv('INSTAGRAM_USERNAME')
-#     password = os.getenv('INSTAGRAM_PASSWORD')
-
-#     path = f'/tmp/{file.filename}'
-#     file.save(path)
-
-#     media = post_image(username, password, path, caption, os.getenv('MAX_TRIES'))
-
-#     if not media:
-#         return {'error': "Failed to post image"}, 500
-    
-#     os.remove(path)
-    
-#     return {'message': 'Image posted successfully'}, 200
-
-
-
-

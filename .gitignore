@@ -4,3 +4,4 @@ __pycache__
 var
 uploads
 instance
+.DS_Store

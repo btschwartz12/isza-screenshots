@@ -49,7 +49,7 @@ def index():
 
     
 
-    instagram_account_url = os.getenv('INSTAGRAM_ACCOUNT_URL')
+    instagram_account_url = os.getenv('ISZASC_INSTAGRAM_ACCOUNT_URL')
 
     return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts, daily_post_times_est=daily_post_times_est, instagram_account_url=instagram_account_url)
 
@@ -88,7 +88,7 @@ def edit_post(post_id):
     if request.method == 'POST':
         if post.is_posted:
             return "Method not allowed", 405
-        secret = os.getenv('EDIT_SECRET')
+        secret = os.getenv('ISZASC_EDIT_SECRET')
         user_secret = request.form['secret']
         if user_secret != secret:
             return "Unauthorized", 401
@@ -140,7 +140,7 @@ def post():
 
     user_secret = request.args.get('secret')
 
-    secret = os.getenv('SECRET')
+    secret = os.getenv('ISZASC_SECRET')
 
     if user_secret != secret:
         return jsonify({'error': 'Unauthorized'}), 401
@@ -157,8 +157,8 @@ def post():
     # wait the file paths are not full paths
     file_paths = [os.path.join(app.config['UPLOAD_FOLDER'], file_path) for file_path in file_paths]    
     # Post the image
-    username = os.getenv('INSTAGRAM_USERNAME')
-    password = os.getenv('INSTAGRAM_PASSWORD')
+    username = os.getenv('ISZASC_INSTAGRAM_USERNAME')
+    password = os.getenv('ISZASC_INSTAGRAM_PASSWORD')
     caption = next_post.caption
     maxtries = os.getenv('NUM_RETRIES')
 
