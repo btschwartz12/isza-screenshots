@@ -15,4 +15,4 @@ jobs:
 
     - name: Run Curl Command
       run: |
-        curl --location --request GET "https://test.btschwartz.com/icestation/api/post?secret=${{ secrets.POST_SECRET }}&test=false"
+        curl --location --request GET "https://btschwartz.com/icestation/api/post?secret=${{ secrets.POST_SECRET }}&test=false"
