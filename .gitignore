@@ -2,6 +2,4 @@ env
 .env
 __pycache__
 var
-uploads
-instance
 .DS_Store

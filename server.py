@@ -31,7 +31,7 @@ def get_daily_post_times_from_yaml_etc(path):
     return post_times_est
 
 
-@app.route('/icestation', methods=['GET'])
+@app.route('/', methods=['GET'])
 def index():
     db.create_all()
     queue_posts = Post.query.filter_by(is_deleted=False, is_posted=False).order_by(Post.position).all()
@@ -54,7 +54,7 @@ def index():
     return render_template('index.html', queue_posts=queue_posts, stack_posts=stack_posts, daily_post_times_est=daily_post_times_est, instagram_account_url=instagram_account_url)
 
 
-@app.route('/icestation/move/<int:post_id>/<direction>')
+@app.route('/move/<int:post_id>/<direction>')
 def move(post_id, direction):
     post = Post.query.get_or_404(post_id)
     if not post:
@@ -73,12 +73,12 @@ def move(post_id, direction):
     return redirect(url_for('index'))
 
 
-@app.route('/icestation/uploads/<filename>')
+@app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-@app.route('/icestation/edit/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/edit/<int:post_id>', methods=['GET', 'POST'])
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
     if not post:
@@ -104,7 +104,7 @@ def edit_post(post_id):
     return render_template('edit_post.html', post=post)
 
 
-@app.route('/icestation/add', methods=['GET', 'POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def add_post():
     if request.method == 'POST':
         files = request.files.getlist('image')  # Get multiple files
@@ -135,7 +135,7 @@ def add_post():
     return render_template('add_post.html')
 
 
-@app.route('/icestation/api/post')
+@app.route('/api/post')
 def post():
 
     user_secret = request.args.get('secret')
