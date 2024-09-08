@@ -6,8 +6,6 @@ services:
     environment:
       - NUM_RETRIES=1
       - DAILY_POST_TIME_EST=12:15pm
-    ports:
-      - 8000:8000
     command: gunicorn -w 2 -b 0.0.0.0:8000 app:app
     volumes:
       - ./instance:/app/instance
