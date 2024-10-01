@@ -10,10 +10,9 @@ services:
     volumes:
       - ./instance:/app/instance
       - ./uploads:/app/var
+    networks:
+      - site_network
 
-  cloudflared:
-    restart: unless-stopped
-    image: cloudflare/cloudflared:latest
-    command: tunnel run
-    environment:
-      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+networks:
+  site_network:
+    external: true
